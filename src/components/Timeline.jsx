@@ -41,32 +41,42 @@ const TimelineItem = ({ event, index }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
-            className={`mb-24 flex w-full items-center justify-between ${isEven ? 'flex-row' : 'flex-row-reverse'}`}
+            className={`mb-32 relative flex w-full items-center justify-between ${isEven ? 'flex-row' : 'flex-row-reverse'}`}
         >
+            {/* Footprints Decoration (Marauder's Map Style) */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: [0, 1, 0] }}
+                transition={{ duration: 2, repeat: Infinity, delay: index * 0.5 }}
+                className={`absolute pointer-events-none top-[-50px] ${isEven ? 'left-[45%]' : 'right-[45%]'}`}
+            >
+                <span className="text-2xl opacity-40 rotate-12 inline-block">👣</span>
+            </motion.div>
+
             {/* Content Side */}
             <div className={`w-5/12 ${isEven ? 'text-right' : 'text-left'}`}>
-                <span className="mb-2 inline-block rounded-full bg-gold/20 px-3 py-1 font-magic text-xs tracking-wider text-text-dark">
+                <span className="mb-2 inline-block rounded border border-hogwarts-ink/30 bg-[#fdfbf7] px-3 py-1 font-magic text-xs tracking-wider text-hogwarts-ink shadow-sm">
                     {event.date}
                 </span>
                 <h3 className="mb-2 font-serif text-2xl font-bold text-text-dark">{event.title}</h3>
-                <p className="font-sans text-text-dark/70">{event.desc}</p>
+                <p className="font-sans text-text-dark/70 italic opacity-90">{event.desc}</p>
             </div>
 
             {/* Center Line Point */}
             <div className="relative flex w-2/12 justify-center">
-                <div className="h-4 w-4 rounded-full bg-gold shadow-[0_0_10px_rgba(255,215,0,0.6)] z-10"></div>
+                <div className="h-6 w-6 rounded-full bg-[url('https://cdn-icons-png.flaticon.com/512/1041/1041383.png')] bg-cover border-2 border-gold z-10 shadow-[0_0_15px_rgba(255,215,0,0.5)]"></div>
             </div>
 
             {/* Image Side */}
             <div className="w-5/12">
                 <motion.div
                     whileHover={{ scale: 1.05 }}
-                    className="overflow-hidden rounded-2xl shadow-lg border-4 border-white"
+                    className="overflow-hidden rounded-lg shadow-xl border-4 border-[#fdfbf7] rotate-1"
                 >
                     <img
                         src={event.img}
                         alt={event.title}
-                        className="h-48 w-full object-cover"
+                        className="h-48 w-full object-cover sepia-[0.2]"
                     />
                 </motion.div>
             </div>
