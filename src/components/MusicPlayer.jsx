@@ -4,18 +4,36 @@ import { Play, Pause, Disc } from 'lucide-react';
 
 const MusicPlayer = () => {
     const [isPlaying, setIsPlaying] = useState(false);
+    const audioRef = useRef(null);
 
-    // In a real scenario, use an audio ref
-    // const audioRef = useRef(new Audio('/assets/dynamite.mp3'));
+    // Initialize audio object
+    React.useEffect(() => {
+        // Attempt to play from public folder
+        audioRef.current = new Audio('/dynamite.mp3');
+        audioRef.current.loop = true;
+        audioRef.current.volume = 0.5;
+
+        return () => {
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current = null;
+            }
+        };
+    }, []);
 
     const togglePlay = () => {
-        setIsPlaying(!isPlaying);
-        // if (isPlaying) audioRef.current.pause();
-        // else audioRef.current.play();
+        if (audioRef.current) {
+            if (isPlaying) {
+                audioRef.current.pause();
+            } else {
+                audioRef.current.play().catch(e => console.error("Playback failed:", e));
+            }
+            setIsPlaying(!isPlaying);
+        }
     };
 
     return (
-        <div className="fixed bottom-6 right-6 z-40">
+        <div className="fixed bottom-6 right-6 z-[60]">
             <motion.div
                 className="flex items-center gap-4 rounded-full bg-white/80 backdrop-blur-md p-2 pl-4 shadow-xl border border-white/50"
                 initial={{ x: 100, opacity: 0 }}
@@ -24,7 +42,7 @@ const MusicPlayer = () => {
             >
                 <div className="text-right hidden md:block">
                     <p className="text-xs font-bold text-text-dark">Dynamite</p>
-                    <p className="text-[10px] text-text-dark/60">BTS</p>
+                    <p className="text-[10px] text-text-dark/60">BTS (Preview)</p>
                 </div>
 
                 <motion.div
